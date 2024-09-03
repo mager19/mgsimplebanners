@@ -63,15 +63,23 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
         {
             $items = get_posts(array(
                 'post_type' => 'mg-simple-banners',
-                'numberposts' => -1
+                'numberposts' => -1,
+                'post_status' => 'publish'
             ));
+
             $checked = (isset(self::$options['mg_simple_banners_show_banner']) && self::$options['mg_simple_banners_show_banner'] == 1) ? 'checked' : '';
 
-            if ($items && $checked == 'checked') { ?>
+            // Si no hay ítems, establecer el valor como cadena vacía
+            if (empty($items)) {
+                self::$options['mg_simple_banners_item_to_show'] = '';
+                echo '<p>' . __('No banners available. Please create a new Banner.', 'mg_simple_banners') . '</p>';
+            }
+
+            // Si hay ítems y la opción de mostrar el banner está marcada
+            if (!empty($items) && $checked == 'checked') { ?>
                 <select
                     id="mv_slider_style"
                     name="mg_simple_banners_options[mg_simple_banners_item_to_show]">
-
                     <?php
                     foreach ($items as $item) {
                         $selected = isset(self::$options['mg_simple_banners_item_to_show']) ? esc_attr(self::$options['mg_simple_banners_item_to_show']) : '';
@@ -80,12 +88,11 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
                     }
                     ?>
                 </select>
-
             <?php
-            }
-            ?>
-
+            } else if (!empty($items)) { ?>
+                <p><?php echo __('Please check the box to show a banner.', 'mg_simple_banners'); ?></p>
 <?php
+            }
         }
     }
 }

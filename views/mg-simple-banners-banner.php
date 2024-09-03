@@ -1,7 +1,6 @@
 <?php
-
 $show = isset(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_show_banner']);
-$itemSelected = isset(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_item_to_show']);
+$itemSelected = isset(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_item_to_show']) ? MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_item_to_show'] : null;
 
 if ($show == 1 && !empty($itemSelected)) {
     $bannerText = get_post_meta(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_item_to_show'], "mg_simple_banners_text", true);
