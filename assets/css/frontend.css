@@ -9,12 +9,19 @@
 	align-items: center;
 	display: flex;
 	font-size: 18px;
-	gap: 200px;
 	justify-content: center;
 	letter-spacing: 0.5px;
 	position: relative;
+	padding-inline: 1rem;
+	padding-block: 10px;
 	transition: all 1s ease;
 	width: 100%;
+
+	span {
+		margin: 0;
+		padding: 0;
+		max-width: 90%;
+	}
 
 	svg {
 		cursor: pointer;
@@ -29,7 +36,7 @@
 	}
 }
 
-.mg-simple-banners-style-1 {
+.mg-simple-banners-style-1www {
 	background-color: var(--mg-simple-banners-black);
 	color: var(--mg-simple-banners-white);
 

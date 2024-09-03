@@ -42,8 +42,10 @@ if (!class_exists("MG_Simple_Banners")) {
         public function __construct()
         {
             $this->define_constants();
-            require_once MG_SIMPLE_BANNERS_PATH .
-                "post-types/mg-simple-banners-cpt.php";
+
+            require_once(MG_SIMPLE_BANNERS_PATH . 'functions/functions.php');
+
+            require_once(MG_SIMPLE_BANNERS_PATH . "post-types/mg-simple-banners-cpt.php");
             $MG_Simple_Banners = new MG_Simple_Banners_Post_Type();
 
             add_action('admin_menu', array($this, 'mg_simple_banners_menu'));
@@ -117,7 +119,16 @@ if (!class_exists("MG_Simple_Banners")) {
 
         public function mg_simple_banners_settings_page()
         {
+            //check if the user has the right permissions
+            if (! current_user_can("manage_options")) {
+                return;
+            }
 
+            //add error/update messages
+            if (isset($_GET["settings-updated"])) {
+                add_settings_error("mg_simple_banners_options", "mg_simple_banners_message", "Settings Saved", "success");
+            }
+            settings_errors('mg_simple_banners_options');
 
             require(MG_SIMPLE_BANNERS_PATH . "views/settings-page.php");
         }

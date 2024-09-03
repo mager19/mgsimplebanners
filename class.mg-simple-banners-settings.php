@@ -43,6 +43,30 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
                     'mg_simple_banners_page1', //page to add this field,
                     'mg_simple_banners_main_section', //section to add this field
                 );
+
+                // second section
+                add_settings_section(
+                    'mg_simple_banners_style_section', //id for the section
+                    'Banner Style', //Section title,
+                    null, //callback functions
+                    'mg_simple_banners_page1' //page to add this section                  
+                );
+
+                add_settings_field(
+                    'mg_simple_banners_style_background',
+                    'Background Color (#HEX)',
+                    array($this, 'mg_simple_banners_style_background_callback'),
+                    'mg_simple_banners_page1',
+                    'mg_simple_banners_style_section'
+                );
+
+                add_settings_field(
+                    'mg_simple_banners_style_color',
+                    'Text Color (#HEX)',
+                    array($this, 'mg_simple_banners_style_color_callback'),
+                    'mg_simple_banners_page1',
+                    'mg_simple_banners_style_section'
+                );
             }
         }
 
@@ -92,6 +116,62 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
             } else if (!empty($items)) { ?>
                 <p><?php echo __('Please check the box to show a banner.', 'mg_simple_banners'); ?></p>
 <?php
+            }
+        }
+
+        public function mg_simple_banners_style_background_callback()
+        {
+            $color = isset(self::$options['mg_simple_banners_style_background']) ? self::$options['mg_simple_banners_style_background'] : '';
+            $color = $this->validate_hex_color($color, 'Background Color');
+            if ($color !== '') {
+                echo '<input type="text" id="mg_simple_banners_style_background" name="mg_simple_banners_options[mg_simple_banners_style_background]" value="' . esc_attr($color) . '" />';
+            } else {
+                echo '<input type="text" id="mg_simple_banners_style_background" name="mg_simple_banners_options[mg_simple_banners_style_background]" value="' . esc_attr($color) . '" />';
+                echo '<p>' . __('Enter a valid hexadecimal color value.', 'mg_simple_banners') . '</p>';
+            }
+        }
+
+        public function mg_simple_banners_style_color_callback()
+        {
+            $color = isset(self::$options['mg_simple_banners_style_color']) ? self::$options['mg_simple_banners_style_color'] : '';
+            $color = $this->validate_hex_color($color, 'Text Color');
+            if ($color !== '') {
+                echo '<input type="text" id="mg_simple_banners_style_color" name="mg_simple_banners_options[mg_simple_banners_style_color]" value="' . esc_attr($color) . '" />';
+            } else {
+                echo '<input type="text" id="mg_simple_banners_style_color" name="mg_simple_banners_options[mg_simple_banners_style_color]" value="' . esc_attr($color) . '" />';
+                echo '<p>' . __('Enter a valid hexadecimal color value.', 'mg_simple_banners') . '</p>';
+            }
+        }
+
+        public function sanitize($input)
+        {
+            $sanitized_input = array();
+            if (isset($input['mg_simple_banners_style_background'])) {
+                $sanitized_input['mg_simple_banners_style_background'] = $this->validate_hex_color($input['mg_simple_banners_style_background'], 'Background Color');
+            }
+            if (isset($input['mg_simple_banners_style_color'])) {
+                $sanitized_input['mg_simple_banners_style_color'] = $this->validate_hex_color($input['mg_simple_banners_style_color'], 'Text Color');
+            }
+            return $sanitized_input;
+        }
+
+        private function validate_hex_color($color, $option_name)
+        {
+
+            // Check if the color is a valid hex color
+            if (preg_match('/^#[a-fA-F0-9]{6}$/', $color)) {
+                return $color;
+            } else {
+                // Return a default color or an empty string if invalid
+                // Add a settings error if the color is invalid
+                add_settings_error(
+                    'mg_simple_banners_options',
+                    'invalid_hex_color',
+                    __('The value for ' . $option_name . ' is not a valid hexadecimal color.', 'mg_simple_banners'),
+                    'error'
+                );
+
+                return '';
             }
         }
     }
