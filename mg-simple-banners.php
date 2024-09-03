@@ -45,6 +45,16 @@ if (!class_exists("MG_Simple_Banners")) {
             require_once MG_SIMPLE_BANNERS_PATH .
                 "post-types/mg-simple-banners-cpt.php";
             $MG_Simple_Banners = new MG_Simple_Banners_Post_Type();
+
+            add_action('admin_menu', array($this, 'mg_simple_banners_menu'));
+
+            require_once(MG_SIMPLE_BANNERS_PATH . "class.mg-simple-banners-settings.php");
+            $MG_Simple_Banners_Settings = new MG_SIMPLE_BANNERS_SETTINGS();
+
+            require_once(MG_SIMPLE_BANNERS_PATH . "banners/class.mg-simple-banners-view.php");
+            $MG_Simple_Banners_view = new MG_SIMPLE_BANNERS_VIEW();
+
+            add_action('wp_enqueue_scripts', array($this, 'register_scripts'), 999);
         }
 
         public function define_constants()
@@ -67,6 +77,68 @@ if (!class_exists("MG_Simple_Banners")) {
         }
 
         public static function uninstall() {}
+
+        public function mg_simple_banners_menu()
+        {
+            add_menu_page(
+                "MG Simple Banners Options",
+                "Simple Banners",
+                "manage_options",
+                "mg-simple-banners-admin",
+                array($this, "mg_simple_banners_settings_page"),
+                "data:image/svg+xml;base64," .
+                    base64_encode(
+                        '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 61 61" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon style="fill:#000;" points="8.5,37 8.5,34.5 8.5,26 0,26 6,34 0,42 14.5,42 14.5,37 10.5,37 "></polygon> <polygon style="fill:#000;" points="61,26 52.5,26 52.5,34.5 52.5,37 50.5,37 45.5,37 45.5,42 61,42 55,34 "></polygon> <rect x="10.5" y="19" style="fill:#000;" width="40" height="16"></rect> </g> </g> </g></svg>
+                        '
+                    ),
+                20
+            );
+
+            add_submenu_page(
+                "mg-simple-banners-admin",
+                "Manage Banners",
+                "All Banners",
+                "manage_options",
+                "edit.php?post_type=mg-simple-banners",
+                null,
+                null
+            );
+
+            add_submenu_page(
+                "mg-simple-banners-admin",
+                "Add New Banner",
+                "Add New Banner",
+                "manage_options",
+                "post-new.php?post_type=mg-simple-banners",
+                null,
+                null
+            );
+        }
+
+        public function mg_simple_banners_settings_page()
+        {
+
+
+            require(MG_SIMPLE_BANNERS_PATH . "views/settings-page.php");
+        }
+
+        public function register_scripts()
+        {
+            wp_register_script(
+                'mg-simple-banners-script',
+                MG_SIMPLE_BANNERS_URL . 'assets/js/frontend.js',
+                null,
+                MG_SIMPLE_BANNERS_VERSION,
+                true
+            );
+            wp_register_style(
+                'mg-simple-banners-frontend',
+                MG_SIMPLE_BANNERS_URL . 'assets/css/frontend.css',
+                array(),
+                MG_SIMPLE_BANNERS_VERSION,
+                'all'
+            );
+        }
     }
 }
 

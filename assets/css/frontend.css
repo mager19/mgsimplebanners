@@ -1,0 +1,41 @@
+:root {
+	/* --mg-simple-banners- */
+
+	--mg-simple-banners-black: #000000;
+	--mg-simple-banners-white: #ffffff;
+}
+
+.mg_simple_banners_container {
+	align-items: center;
+	display: flex;
+	font-size: 18px;
+	gap: 200px;
+	justify-content: center;
+	letter-spacing: 0.5px;
+	position: relative;
+	transition: all 1s ease;
+	width: 100%;
+
+	svg {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin-top: auto;
+		margin-bottom: auto;
+		right: 20px;
+		width: 20px;
+		height: 20px;
+	}
+}
+
+.mg-simple-banners-style-1 {
+	background-color: var(--mg-simple-banners-black);
+	color: var(--mg-simple-banners-white);
+
+	svg {
+		path {
+			stroke: var(--mg-simple-banners-white);
+		}
+	}
+}
