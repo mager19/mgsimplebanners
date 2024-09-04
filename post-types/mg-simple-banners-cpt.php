@@ -90,12 +90,6 @@ if (!class_exists("MG_Simple_Banners_Post_Type")) {
                 $new_link_text = sanitize_text_field(
                     $_POST["mg_simple_banners_text"]
                 );
-                $old_link_url = get_post_meta(
-                    $post_id,
-                    "mg_simple_banners_url",
-                    true
-                );
-                $new_link_url = $_POST["mg_simple_banners_url"];
 
                 if (empty($new_link_text)) {
                     update_post_meta(
@@ -111,6 +105,38 @@ if (!class_exists("MG_Simple_Banners_Post_Type")) {
                         $old_link_text
                     );
                 }
+
+                $old_link_text_banner = get_post_meta(
+                    $post_id,
+                    "mg_simple_banners_link_text",
+                    true
+                );
+                $new_link_text_banner = sanitize_text_field(
+                    $_POST["mg_simple_banners_link_text"]
+                );
+
+                if (empty($new_link_text_banner)) {
+                    update_post_meta(
+                        $post_id,
+                        "mg_simple_banners_link_text",
+                        ""
+                    );
+                } else {
+                    update_post_meta(
+                        $post_id,
+                        "mg_simple_banners_link_text",
+                        $new_link_text_banner,
+                        $old_link_text_banner
+                    );
+                }
+
+
+                $old_link_url = get_post_meta(
+                    $post_id,
+                    "mg_simple_banners_url",
+                    true
+                );
+                $new_link_url = $_POST["mg_simple_banners_url"];
 
                 if (empty($new_link_url)) {
                     update_post_meta($post_id, "mg_simple_banners_url", "#");

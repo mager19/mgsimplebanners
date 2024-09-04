@@ -157,5 +157,5 @@ if (class_exists("MG_Simple_Banners")) {
     register_activation_hook(__FILE__, ["MG_Simple_Banners", "activate"]);
     register_deactivation_hook(__FILE__, ["MG_Simple_Banners", "deactivate"]);
     register_uninstall_hook(__FILE__, ["MG_Simple_Banners", "uninstall"]);
-    $mv_slider = new MG_Simple_Banners();
+    $mg_simple_banners = new MG_Simple_Banners();
 }

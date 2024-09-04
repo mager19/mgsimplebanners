@@ -18,12 +18,15 @@ if (! class_exists('MG_SIMPLE_BANNERS_VIEW')) {
 
             $color = isset(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_style_color']) ? MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_style_color'] : '#ffffff';
 
+            $linkColor = isset(MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_link_color']) ? MG_SIMPLE_BANNERS_SETTINGS::$options['mg_simple_banners_link_color'] : '#f9f9f9';
+
             wp_localize_script(
                 'mg-simple-banners-script',
                 'MG_SIMPLE_BANNERS_OPTIONS',
                 array(
                     'background' => $background,
-                    'color' => $color
+                    'color' => $color,
+                    'linkColor' => $linkColor
                 )
             );
         }

@@ -67,6 +67,14 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
                     'mg_simple_banners_page1',
                     'mg_simple_banners_style_section'
                 );
+
+                add_settings_field(
+                    'mg_simple_banners_link_color',
+                    'Link Color (#HEX)',
+                    array($this, 'mg_simple_banners_link_color_callback'),
+                    'mg_simple_banners_page1',
+                    'mg_simple_banners_style_section'
+                );
             }
         }
 
@@ -143,6 +151,18 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
             }
         }
 
+        public function mg_simple_banners_link_color_callback()
+        {
+            $linkcolor = isset(self::$options['mg_simple_banners_link_color']) ? self::$options['mg_simple_banners_link_color'] : '';
+            $linkcolor = $this->validate_hex_color($linkcolor, 'Link Color');
+            if ($linkcolor !== '') {
+                echo '<input type="text" id="mg_simple_banners_link_color" name="mg_simple_banners_options[mg_simple_banners_link_color]" value="' . esc_attr($linkcolor) . '" />';
+            } else {
+                echo '<input type="text" id="mg_simple_banners_link_color" name="mg_simple_banners_options[mg_simple_banners_link_color]" value="' . esc_attr($linkcolor) . '" />';
+                echo '<p>' . __('Enter a valid hexadecimal color value.', 'mg_simple_banners') . '</p>';
+            }
+        }
+
         public function sanitize($input)
         {
             $sanitized_input = array();
@@ -151,6 +171,9 @@ if (! class_exists('MG_SIMPLE_BANNERS_SETTINGS')) {
             }
             if (isset($input['mg_simple_banners_style_color'])) {
                 $sanitized_input['mg_simple_banners_style_color'] = $this->validate_hex_color($input['mg_simple_banners_style_color'], 'Text Color');
+            }
+            if (isset($input['mg_simple_banners_link_color'])) {
+                $sanitized_input['mg_simple_banners_link_color'] = $this->validate_hex_color($input['mg_simple_banners_link_color'], 'Link Color');
             }
             return $sanitized_input;
         }
